@@ -29,28 +29,28 @@ public class BoopController : MonoBehaviour
                 {
                     newPos = new Vector3(transform.localPosition.x - 2, transform.localPosition.y, transform.localPosition.z);
                     moving = true;
-                    StartCoroutine(MoveBoop());
+                    StartCoroutine(MoveBoop(newPos));
                 }
 
                 if (Input.GetKeyDown(KeyCode.S) && !moving)
                 {
                     newPos = new Vector3(transform.localPosition.x + 2, transform.localPosition.y, transform.localPosition.z);
                     moving = true;
-                    StartCoroutine(MoveBoop());
+                    StartCoroutine(MoveBoop(newPos));
                 }
 
                 if (Input.GetKeyDown(KeyCode.A) && !moving)
                 {
                     newPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z - 2);
                     moving = true;
-                    StartCoroutine(MoveBoop());
+                    StartCoroutine(MoveBoop(newPos));
                 }
 
                 if (Input.GetKeyDown(KeyCode.W) && !moving)
                 {
                     newPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z + 2);
                     moving = true;
-                    StartCoroutine(MoveBoop());
+                    StartCoroutine(MoveBoop(newPos));
                 }
             }
 
@@ -62,11 +62,21 @@ public class BoopController : MonoBehaviour
 
     }
 
-    IEnumerator MoveBoop()
+    IEnumerator MoveBoop(Vector3 pos)
     {
-        transform.localPosition = newPos;
-        energy--;
-        yield return new WaitForSeconds(2f);
+        float time = 2;
+        float delta = 0;
+        Vector3 initPos = transform.localPosition;
+
+        while (delta <= 1)
+        {
+            transform.localPosition = Vector3.Lerp(initPos, pos, delta);
+
+            delta += Time.deltaTime / time;
+            yield return null;
+        }
+        --energy;
+        transform.localPosition = pos;
         moving = false;
     }
 

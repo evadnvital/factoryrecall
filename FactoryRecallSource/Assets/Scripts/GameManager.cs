@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
 
     public Character currentCharacter;
 
+    private BoopController boopController;
+    private BeepController beepController;
+
     private void Awake()
     {
         if (gameManager == null)
@@ -32,7 +35,9 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-       gameManager.currentCharacter = Character.Beep;
+        gameManager.currentCharacter = Character.Beep;
+        beepController = FindObjectOfType<BeepController>();
+        boopController = FindObjectOfType<BoopController>();
     }
 
     // Update is called once per frame
@@ -40,7 +45,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (gameManager.currentCharacter == Character.Beep)
+            if (gameManager.currentCharacter == Character.Beep && boopController.energy > 0)
             {
                 gameManager.currentCharacter = Character.Boop;
             }

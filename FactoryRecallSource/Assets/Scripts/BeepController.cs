@@ -4,26 +4,49 @@ using UnityEngine;
 
 public class BeepController : MonoBehaviour
 {
-
+    public static BeepController beepController { get; private set; }
     [SerializeField] private GameObject selector;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
-
+        beepController = this;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.gameManager.currentCharacter == GameManager.Character.Beep)
+        if (!GameManager.gameManager.PuzzleActive)
         {
-            selector.SetActive(true);
+            if (GameManager.gameManager.currentCharacter == GameManager.Character.Beep)
+            {
+                selector.SetActive(true);
 
-        }
-        else if (GameManager.gameManager.currentCharacter != GameManager.Character.Beep)
-        {
-            selector.SetActive(false);
+                if (Input.GetKey(KeyCode.Q) )
+                {
+                    transform.localPosition = new Vector3(transform.localPosition.x - 0.1f, transform.localPosition.y, transform.localPosition.z);
+                }
+
+                if (Input.GetKey(KeyCode.S) )
+                {
+                    transform.localPosition = new Vector3(transform.localPosition.x + 0.1f, transform.localPosition.y, transform.localPosition.z);
+                }
+
+                if (Input.GetKey(KeyCode.A) )
+                {
+                    transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z - 0.1f);
+                }
+
+                if (Input.GetKey(KeyCode.W))
+                {
+                    transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z + 0.1f);
+                }
+
+            }
+            else if (GameManager.gameManager.currentCharacter != GameManager.Character.Beep)
+            {
+                selector.SetActive(false);
+            }
         }
     }
 }

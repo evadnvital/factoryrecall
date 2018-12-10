@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class CircuitCable : MonoBehaviour
 {
-    private BoopController boopController;
     private bool isCharging;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
-        boopController = FindObjectOfType<BoopController>();
         isCharging = false;
-        StartCoroutine(Charge());
     }
     
     private void OnTriggerStay(Collider other)
@@ -31,20 +28,26 @@ public class CircuitCable : MonoBehaviour
         }
     }
 
+    public void StartCharge()
+    {
+        StartCoroutine(Charge());
+    }
+
     IEnumerator Charge()
     {
         while (true)
         {
             if (isCharging)
             {
-                if (boopController.energy < 5)
+                if (BoopController.boopController.energy < 5)
                 {
                     yield return new WaitForSeconds(1f);
-                    boopController.energy++;
+                    ++BoopController.boopController.energy;
+                    CanvasManager.canvasManager.UpdateEnergy();
                 }
                 else
                 {
-                    boopController.energy = 5;
+                    BoopController.boopController.energy = 5;
                     yield return null;
                 }
             }

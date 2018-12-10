@@ -1,14 +1,13 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CircuitCable : MonoBehaviour
 {
     private bool isCharging;
 
-    // Use this for initialization
-    void Awake()
+    void Start()
     {
+        //sets default variable values
         isCharging = false;
     }
     
@@ -16,6 +15,7 @@ public class CircuitCable : MonoBehaviour
     {
         if (other.GetComponent<BoopController>() != null)
         {
+            //while Boop is on cables sets as charging
             isCharging = true;
         }
     }
@@ -24,12 +24,14 @@ public class CircuitCable : MonoBehaviour
     {
         if (other.GetComponent<BoopController>() != null)
         {
+            //if Boop leaves cables stop charging
             isCharging = false;
         }
     }
 
     public void StartCharge()
     {
+        //calls for charging
         StartCoroutine(Charge());
     }
 
@@ -41,12 +43,14 @@ public class CircuitCable : MonoBehaviour
             {
                 if (BoopController.boopController.energy < 5)
                 {
+                    //charges Boop's energy by 1 each 1 second and updates canvas
                     yield return new WaitForSeconds(1f);
                     ++BoopController.boopController.energy;
                     CanvasManager.canvasManager.UpdateEnergy();
                 }
                 else
                 {
+                    //if Boop's energy is 5 then doesn't increase further
                     BoopController.boopController.energy = 5;
                     yield return null;
                 }

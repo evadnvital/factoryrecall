@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -54,8 +53,12 @@ public class GameManager : MonoBehaviour
     }
 
     public Character currentCharacter;
+
+
     private void Awake()
     {
+        #region instance
+        //creates singleton to be accessed by other scripts
         if (gameManager == null)
         {
             gameManager = this;
@@ -68,11 +71,12 @@ public class GameManager : MonoBehaviour
         gameObject.name = "GameManager";
 
         DontDestroyOnLoad(gameObject);
+        #endregion
     }
 
-    // Use this for initialization
     void Start()
     {
+        //default variable values
         gameManager.currentCharacter = Character.Beep;
         puzzleActive = false;
         LevelResolved = false;
@@ -80,22 +84,26 @@ public class GameManager : MonoBehaviour
         greenCircuitResolved = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //check if game is running (not with a puzzle on screen)
         if (!puzzleActive)
         {
+            //check if player is switching characters (Key: Tab)
             if (Input.GetKeyDown(KeyCode.Tab))
             {
+                //changes to Boop if it has energy
                 if (gameManager.currentCharacter == Character.Beep && BoopController.boopController.energy > 0)
                 {
                     gameManager.currentCharacter = Character.Boop;
                 }
+                //changes to Beep
                 else if (gameManager.currentCharacter == Character.Boop)
                 {
                     gameManager.currentCharacter = Character.Beep;
                 }
             }
+            //checks if the puzzles were resolved but Boop has no energy to complete level
             if (blueCircuitResolved && greenCircuitResolved && BoopController.boopController.energy == 0)
             {
                 StartCoroutine(BoopReset());
@@ -105,17 +113,20 @@ public class GameManager : MonoBehaviour
 
     private void UpdateCircuits()
     {
+        //if both puzzles were resolved then level is resolved
         if (blueCircuitResolved && greenCircuitResolved) LevelResolved = true;
         else LevelResolved = false;
     }
 
     public void LoadLevel()
     {
+        //loads the next level
         if (SceneManager.GetActiveScene().buildIndex < SceneManager.sceneCountInBuildSettings - 1)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             ResetLevel();
         }
+        //loads the first level if player is in last level
         else if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
         {
             SceneManager.LoadScene(0);
@@ -125,12 +136,14 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
+        //restarts the current level
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         ResetLevel();
     }
 
     private void ResetLevel()
     {
+        //returns variable values to default values
         gameManager.currentCharacter = Character.Beep;
         puzzleActive = false;
         LevelResolved = false;
@@ -140,6 +153,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator BoopReset()
     {
+        //checks if Boop is recharging to avoid level reset due to no energy
         yield return new WaitForSeconds(1.5f);
         if (BoopController.boopController.energy == 0)
             RestartLevel();

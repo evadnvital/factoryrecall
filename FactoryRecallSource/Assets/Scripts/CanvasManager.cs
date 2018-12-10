@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class CanvasManager : MonoBehaviour
@@ -15,25 +13,27 @@ public class CanvasManager : MonoBehaviour
 
     private void Awake()
     {
+        //allows other scripts to access the Canvas Manager
         canvasManager = this;
     }
 
-    // Use this for initialization
     void Start()
     {
+        //sets default variable values
         puzzleGreen.SetActive(false);
         puzzleBlue.SetActive(false);
         UpdateEnergy();
     }
 
-    // Update is called once per frame
     public void UpdateEnergy()
     {
+        //updates Boop's energy
         energyLevel.text = BoopController.boopController.energy.ToString();
     }
 
     public void PopUpPuzzle(string color)
     {
+        //displays puzzle
         if (color == "Blue")
         {
             puzzleBlue.SetActive(true);
@@ -48,6 +48,7 @@ public class CanvasManager : MonoBehaviour
 
     public void ResolvePuzzle(string color)
     {
+        //sets puzzle as resolved, calls to show cables and returns to game
         if(color == "Blue")
         {
             GameManager.gameManager.BlueCircuitResolved = true;

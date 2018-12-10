@@ -1,27 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BeepController : MonoBehaviour
 {
     public static BeepController beepController { get; private set; }
     [SerializeField] private GameObject selector;
-
-    // Use this for initialization
+    
     void Awake()
     {
+        //allows other scripts to access the Beep Controller
         beepController = this;
     }
-
-    // Update is called once per frame
+    
     void Update()
     {
+        //check if game is running (not with a puzzle on screen)
         if (!GameManager.gameManager.PuzzleActive)
         {
+            //check if current controlled character is Beep
             if (GameManager.gameManager.currentCharacter == GameManager.Character.Beep)
             {
+                //shows current controlled character indicator
                 selector.SetActive(true);
 
+                //moves Beep
                 if (Input.GetKey(KeyCode.Q) )
                 {
                     transform.localPosition = new Vector3(transform.localPosition.x - 0.1f, transform.localPosition.y, transform.localPosition.z);
@@ -43,8 +44,10 @@ public class BeepController : MonoBehaviour
                 }
 
             }
+            //check if current controlled character is not Beep
             else if (GameManager.gameManager.currentCharacter != GameManager.Character.Beep)
             {
+                //removes current controlled character indicator
                 selector.SetActive(false);
             }
         }

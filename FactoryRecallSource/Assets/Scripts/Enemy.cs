@@ -1,52 +1,52 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-
     private Vector3 newPos;
     private bool moving;
-    private int direction;
+    private int direction;      //current movement direction
     private bool stopMoving;
 
-    // Use this for initialization
     void Start()
     {
+        //sets default variable values
         direction = 1;
         stopMoving = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //check if game is running (not with a puzzle on screen)
         if (!GameManager.gameManager.PuzzleActive)
         {
+            //checks if Enemy is not moving and cheat is not active
             if (!moving && !stopMoving)
             {
+                //moves Enemy according to direction
                 if (direction == 1)
                 {
                     newPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z + 2);
                 }
-
                 if (direction == 2)
                 {
                     newPos = new Vector3(transform.localPosition.x - 2, transform.localPosition.y, transform.localPosition.z);
                 }
-
                 if (direction == 3)
                 {
                     newPos = new Vector3(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z - 2);
                 }
-
                 if (direction == 4)
                 {
                     newPos = new Vector3(transform.localPosition.x + 2, transform.localPosition.y, transform.localPosition.z);
                 }
+
+                //sets Enemy as moving
                 moving = true;
+                //starts Enemy's movement
                 StartCoroutine(Move(newPos));
             }
-
+            //cheat code to stop Enemy from moving
             if (Input.GetKeyDown(KeyCode.C))
             {
                 StopMoving();
@@ -56,6 +56,7 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //restarts the level if Enemy touches any of the characters
         if (other.GetComponent<BeepController>() || other.GetComponent<BoopController>())
         {
             GameManager.gameManager.RestartLevel();
@@ -64,18 +65,21 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Move(Vector3 pos)
     {
+        //creates Enemy's movement animation
         float time = 1.5f;
         float delta = 0;
         Vector3 initPos = transform.localPosition;
 
         while (delta <= 1)
         {
+            //interpolates Enemy's movement
             transform.localPosition = Vector3.Lerp(initPos, pos, delta);
 
             delta += Time.deltaTime / time;
             yield return null;
         }
 
+        //changes the direction
         if (transform.position.z >= 3 && direction == 1)
         {
             direction = 2;
@@ -100,11 +104,13 @@ public class Enemy : MonoBehaviour
             transform.position = pos;
 
         yield return new WaitForSeconds(1);
+        //sets as not moving
         moving = false;
     }
 
     private void StopMoving()
     {
+        //stops all movement
         stopMoving = !stopMoving;
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PressurePlate : MonoBehaviour
 {
@@ -8,6 +6,7 @@ public class PressurePlate : MonoBehaviour
 
     private void Start()
     {
+        //finds Door in game
         door = GameObject.FindObjectOfType<Door>();
     }
 
@@ -15,6 +14,7 @@ public class PressurePlate : MonoBehaviour
     {
         if (other.GetComponent<BoopController>())
         {
+            //if Boop is on the plate starts animation and sets plate as active
             this.GetComponent<Animator>().SetBool("isPressed", true);
             door.PressurePlateActivated = true;
         }
@@ -22,6 +22,7 @@ public class PressurePlate : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        //while Boop is on plate checks if Door can open
         if (other.GetComponent<BoopController>())
             door.Open();
     }
@@ -30,6 +31,7 @@ public class PressurePlate : MonoBehaviour
     {
         if (other.GetComponent<BoopController>())
         {
+            //if Boop leaves plate starts animation
             this.GetComponent<Animator>().SetBool("isPressed", false);
         }
     }

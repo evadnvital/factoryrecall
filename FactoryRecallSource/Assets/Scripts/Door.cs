@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Door : MonoBehaviour
 {
@@ -18,19 +16,19 @@ public class Door : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     public void Open()
     {
+        //if level is resolved starts animation
         if (GameManager.gameManager.LevelResolved)
             GetComponent<Animator>().SetBool("levelResolved", true);
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        //if Beep goes through door starts new level
         if (other.GetComponent<BeepController>())
         {
             GameManager.gameManager.LoadLevel();
         }
     }
-
 }

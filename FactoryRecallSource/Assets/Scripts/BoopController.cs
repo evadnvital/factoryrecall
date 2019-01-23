@@ -8,7 +8,8 @@ public class BoopController : MonoBehaviour
     private Vector3 newPos;                                             //Boop's target position
     [SerializeField] private GameObject selector;
     public int energy = 5;                                              //Boop's energy
-    private float speed = 2;                                            //Boop's movement speed
+    [SerializeField] private SpriteRenderer[] battery;
+    private float speed = 1.5f;                                         //Boop's movement speed
 
     private void Awake()
     {
@@ -21,6 +22,7 @@ public class BoopController : MonoBehaviour
         //sets default variable values
         moving = false;
         energy = 5;
+        Battery();
     }
 
     void Update()
@@ -95,6 +97,20 @@ public class BoopController : MonoBehaviour
         }
     }
 
+    public void Battery()
+    {
+        //sets the battery sprites active according to energy level
+        for (int i = 0; i < battery.Length; i++)
+        {
+            battery[i].gameObject.SetActive(false);
+        }
+
+        for (int i = 0; i < energy; i++)
+        {
+            battery[i].gameObject.SetActive(true);
+        }
+    }
+
     IEnumerator MoveBoop(Vector3 pos)
     {
         //creates Boop's movement animation
@@ -115,16 +131,17 @@ public class BoopController : MonoBehaviour
         moving = false;
         //expends 1 energy and updates canvas
         energy--;
-        CanvasManager.canvasManager.UpdateEnergy();
+        //CanvasManager.canvasManager.UpdateEnergy();
+        Battery();
     }
 
     private void BoopSpeed()
     {
         //sets Boop's movement speed as instant
-        if (speed == 2.0f)
+        if (speed == 1.5f)
             speed = 0;
         else
-            speed = 2.0f;
+            speed = 1.5f;
     }
 
 }

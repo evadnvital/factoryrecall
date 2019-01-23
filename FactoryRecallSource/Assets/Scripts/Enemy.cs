@@ -66,7 +66,7 @@ public class Enemy : MonoBehaviour
     IEnumerator Move(Vector3 pos)
     {
         //creates Enemy's movement animation
-        float time = 1.5f;
+        float time = 1f;
         float delta = 0;
         Vector3 initPos = transform.localPosition;
 
@@ -103,7 +103,7 @@ public class Enemy : MonoBehaviour
         else
             transform.position = pos;
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         //sets as not moving
         moving = false;
     }

@@ -46,7 +46,8 @@ public class CircuitCable : MonoBehaviour
                     //charges Boop's energy by 1 each 1 second and updates canvas
                     yield return new WaitForSeconds(1f);
                     ++BoopController.boopController.energy;
-                    CanvasManager.canvasManager.UpdateEnergy();
+                    //CanvasManager.canvasManager.UpdateEnergy();
+                    BoopController.boopController.Battery();
                 }
                 else
                 {

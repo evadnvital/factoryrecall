@@ -5,7 +5,7 @@ public class CanvasManager : MonoBehaviour
 {
     public static CanvasManager canvasManager { get; private set; }
 
-    [SerializeField] private Text energyLevel;
+    //[SerializeField] private Text energyLevel;
     [SerializeField] private GameObject puzzleBlue;
     [SerializeField] private CircuitBox circuitBlue;
     [SerializeField] private GameObject puzzleGreen;
@@ -22,14 +22,16 @@ public class CanvasManager : MonoBehaviour
         //sets default variable values
         puzzleGreen.SetActive(false);
         puzzleBlue.SetActive(false);
-        UpdateEnergy();
+        //UpdateEnergy();
     }
 
+    /*
     public void UpdateEnergy()
     {
         //updates Boop's energy
         energyLevel.text = BoopController.boopController.energy.ToString();
     }
+    */
 
     public void PopUpPuzzle(string color)
     {
